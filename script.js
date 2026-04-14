@@ -1,26 +1,22 @@
-// This function runs when the user clicks 'Send'
 async function sendMessage() {
-  const input = document.querySelector('input'); 
+  const input = document.querySelector('input[placeholder*="Type"]');
   const message = input.value;
   if (!message) return;
 
   try {
-    // This calls your Netlify 'Bridge'
     const response = await fetch('/.netlify/functions/chat', {
       method: 'POST',
       body: JSON.stringify({ message: message })
     });
-    
     const data = await response.json();
     
-    // This is a basic way to show the reply - you can customize this later!
+    // This shows the response in a pop-up so we know it's working!
     alert("Alex says: " + data.reply);
-    input.value = ""; // Clear the box
+    input.value = ""; 
   } catch (error) {
-    console.error("Connection failed", error);
-    alert("Still having a connection issue. Check Netlify logs!");
+    alert("Still connecting... wait 1 minute for Netlify to finish!");
   }
 }
 
-// Attach this to your button
-document.querySelector('button').addEventListener('click', sendMessage);
+// This finds the gold button automatically 
+document.querySelector('button.bg-gold').onclick = sendMessage;
